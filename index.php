@@ -29,7 +29,8 @@ function runScripts($path, &$data)
         $result = testOutput($output);
         $temp = [
             'command' => $command,
-            'result' => $result
+            'result' => $result,
+            'output' => $output
         ];
         $data[] = $temp;
     }
@@ -61,7 +62,10 @@ $display = $display == 'json' ? 'json' : 'html';
 if ($display == 'html') {
     echo '<h1>Task1</h1>';
     foreach ($data as $row) {
-        echo '<p>"' . $row['command'] . '": ' . $row['result'] . '</p>';
+        ob_flush();
+        flush();
+        sleep(1);
+        echo '<p>"Command: ' . $row['command'] . '": Result : ' . $row['result'] . ': Output: '.$row['output'][0].'</p>';
     }
 } elseif ($display == 'json') {
     $json = json_encode($data);
